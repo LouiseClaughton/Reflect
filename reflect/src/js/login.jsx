@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import LiquidGlassBtn from './Components/liquid-glass-btn';
 
 function Login() {
     const clientId = "Ov23liggGB7YuMpZGh1w";
@@ -13,7 +14,7 @@ function Login() {
         <div className="w-full h-full flex justify-center items-center">
             <div className="">
                 <h1>Welcome!</h1>
-                <a href={loginUrl}>Login</a>
+                <LiquidGlassBtn href={loginUrl}>Login</LiquidGlassBtn>
             </div>
         </div>
     )

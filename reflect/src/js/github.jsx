@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function GetGitHubData() {
+export function GetGitHubData() {
     const [repos, setRepos] = useState([]);
     const [commitsPerMonth, setCommitsPerMonth] = useState([]);
     const [commitsThisYear, setCommitsThisYear] = useState([]);
@@ -11,7 +11,7 @@ function GetGitHubData() {
         async function fetchRepos() {
             const response = await fetch("https://api.github.com/user/repos", {
                 headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+                    Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
                 }
             });
 
@@ -70,30 +70,7 @@ function GetGitHubData() {
         setCommitsPerMonth(getCommitsPerMonth(commitsThisYear));
     }, [commitsThisYear]);
 
-    return (
-        <>
-        <h2>Repositories</h2>
-        {repos.map(repo => (
-            <div key={repo.id} className="p-3 bg-slate-800 rounded mb-2">
-            {repo.name}
-            </div>
-        ))}
-
-        <h2>Commits this year: {commitsThisYear.length}</h2>
-        {commitsThisYear.map(commit => (
-            <div className="p-3 bg-slate-800 rounded mb-2">
-            {commit.commit.message}
-            </div>
-        ))}
-
-        <h2>Commits per month: </h2>
-            {Object.entries(commitsPerMonth).map(([month, count]) => (
-                <div key={month} className="p-3 bg-slate-800 rounded mb-2">
-                {month}: {count} commits
-                </div>
-            ))}
-        </>
-    );
+    return { repos, commitsThisYear, commitsPerMonth };
 }
 
 export default GetGitHubData;

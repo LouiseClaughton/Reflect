@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 
+@theme {
+  --btn-radius: 60px;
+  --btn-content-bg: hsl(0 100% 100% / 15%);
+  --btn-filters: blur(4px) brightness(150%);
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -44,7 +50,6 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
