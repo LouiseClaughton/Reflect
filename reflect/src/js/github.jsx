@@ -52,19 +52,29 @@ export function GetGitHubData() {
 
     useEffect(() => {
         function getCommitsPerMonth(commits) {
-            const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
             
             const counts = {};
             monthNames.forEach(month => counts[month] = 0);
 
             commits.forEach(commit => {
                 const date = new Date(commit.commit.author.date);
-                const month = date.toLocaleString("default", { month: "short" });
+                const month = date.toLocaleString("default", { month: "long" });
 
                 counts[month] = (counts[month] || 0) + 1;
             });
 
-            return counts;
+            // Find the month with the most commits
+            let maxMonth = null;
+            let maxCount = 0;
+            for (const [month, count] of Object.entries(counts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxMonth = month;
+                }
+            }
+
+            return { counts, maxMonth, maxCount };
         }
 
         setCommitsPerMonth(getCommitsPerMonth(commitsThisYear));

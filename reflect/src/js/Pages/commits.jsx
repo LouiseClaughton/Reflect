@@ -1,38 +1,26 @@
 import { useState, useEffect } from 'react'
 import getGitHubData from '../github';
+import LiquidGlassBtn from '../Components/liquid-glass-btn';
+import LiquidGlassContainer from '../Components/liquid-glass-container';
 
 function DisplayCommits() {
-    const { repos, commitsThisYear, commitsPerMonth } = getGitHubData();
+    const { commitsThisYear, commitsPerMonth } = getGitHubData();
+
+    const counts = commitsPerMonth?.counts || {};
+    const maxMonth = commitsPerMonth?.maxMonth || 'None';
+    const maxCount = commitsPerMonth?.maxCount || 0;
 
     return (
-        <>
-
-            <span>You committed</span>
-            <h2>{commitsThisYear.length} times</h2>
-
-            <span>March was your most active month, with 2 commits</span>
-
-            <h2>Repositories</h2>
-            {repos.map(repo => (
-                <div key={repo.id} className="p-3 bg-slate-800 rounded mb-2">
-                {repo.name}
-                </div>
-            ))}
-
-            <h2>Commits this year: {commitsThisYear.length}</h2>
-            {commitsThisYear.map(commit => (
-                <div className="p-3 bg-slate-800 rounded mb-2">
-                {commit.commit.message}
-                </div>
-            ))}
-
-            <h2>Commits per month: </h2>
-            {Object.entries(commitsPerMonth).map(([month, count]) => (
-                <div key={month} className="p-3 bg-slate-800 rounded mb-2">
-                {month}: {count} commits
-                </div>
-            ))}
-        </>
+        <div className="w-full h-full flex flex-col justify-center items-center">
+            <LiquidGlassContainer className="m-12">
+                <span>You committed</span>
+                <h1>{commitsThisYear.length} times</h1>
+                <span>Your most active month was {maxMonth} with {maxCount} commits</span>
+            </LiquidGlassContainer>
+            <LiquidGlassBtn href='/commits'>
+                Next
+            </LiquidGlassBtn>
+        </div>
     );
 }
 
