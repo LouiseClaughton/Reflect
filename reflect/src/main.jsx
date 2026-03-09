@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './style.css';
 
-import GetGitHubData from './services/github.jsx';
-import Login from './services/login.jsx';
-import Callback from './services/callback.jsx';
+import GetGitHubData from './js/github.jsx';
+import Login from './js/login.jsx';
+import Callback from './js/callback.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

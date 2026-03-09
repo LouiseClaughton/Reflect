@@ -10,7 +10,12 @@ function Login() {
     `&scope=repo read:org`;
 
     return (
-        <a href={loginUrl}>Login</a>
+        <div className="w-full h-full flex justify-center items-center">
+            <div className="">
+                <h1>Welcome!</h1>
+                <a href={loginUrl}>Login</a>
+            </div>
+        </div>
     )
 }
 
