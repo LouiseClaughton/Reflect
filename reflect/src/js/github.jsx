@@ -9,39 +9,16 @@ export function GetGitHubData() {
 
     useEffect(() => {
         async function fetchRepos() {
-            const response = await fetch("https://api.github.com/user/repos", {
-                headers: {
-                    Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
-                }
-            });
+            const response = await fetch("https://api.github.com/user/repos");
 
             const data = await response.json();
             setRepos(data);
         }
 
-        async function fetchOrgRepos() {
-            const response = await fetch(
-                "https://api.github.com/orgs/Flaunt-Digital/repos",
-                {
-                    headers: {
-                        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
-                    }
-                }
-            );
-
-            const data = await response.json();
-
-        }
-
         fetchRepos();
-        fetchOrgRepos();
 
         async function getCommits(owner, repo) {
-            const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?since=${yearStart}`, {
-                headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
-                }
-            });
+            const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?since=${yearStart}`);
 
             const commits = await response.json();
             setCommitsThisYear(commits);
