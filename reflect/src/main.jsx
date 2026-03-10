@@ -8,6 +8,7 @@ import Login from './js/login.jsx';
 import Callback from './js/callback.jsx';
 import Dashboard from './js/dashboard.jsx';
 import DisplayCommits from './js/Pages/commits.jsx';
+import DisplayRepositories from './js/Pages/repositories.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/callback" element={<Callback />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/commits" element={<DisplayCommits />} />
+        <Route path="/repositories" element={<DisplayRepositories />} />
       </Routes>
     </Router>
   </StrictMode>

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 
 export function GetGitHubData() {
     const [repos, setRepos] = useState([]);
+    const [mostCommitsRepo, setMostCommitsRepo] = useState(null);
+    const [mostPRsRepo, setMostPRsRepo] = useState(null);
     const [commitsPerMonth, setCommitsPerMonth] = useState([]);
     const [commitsThisYear, setCommitsThisYear] = useState([]);
 
@@ -9,7 +11,11 @@ export function GetGitHubData() {
 
     useEffect(() => {
         async function fetchRepos() {
-            const response = await fetch("https://api.github.com/user/repos");
+            const response = await fetch("https://api.github.com/user/repos", {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+                }
+            });
 
             const data = await response.json();
             setRepos(data);
@@ -18,7 +24,11 @@ export function GetGitHubData() {
         fetchRepos();
 
         async function getCommits(owner, repo) {
-            const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?since=${yearStart}`);
+            const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?since=${yearStart}`, {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+                }
+            });
 
             const commits = await response.json();
             setCommitsThisYear(commits);
@@ -57,7 +67,85 @@ export function GetGitHubData() {
         setCommitsPerMonth(getCommitsPerMonth(commitsThisYear));
     }, [commitsThisYear]);
 
-    return { repos, commitsThisYear, commitsPerMonth };
+    useEffect(() => {
+        async function fetchRepos() {
+            const response = await fetch("https://api.github.com/user/repos", {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+                }
+            });
+
+            const data = await response.json();
+            setRepos(data);
+        }
+
+        fetchRepos();
+    }, []);
+
+    useEffect(() => {
+        if (!repos.length) return;
+
+        async function getRepoStats() {
+
+            const commitPromises = repos.map(repo =>
+                fetch(`https://api.github.com/repos/${repo.owner.login}/${repo.name}/commits?since=${yearStart}&per_page=100`, {
+                    headers: {
+                        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+                    }
+                }).then(res => res.json())
+            );
+
+            const prPromises = repos.map(repo =>
+                fetch(`https://api.github.com/repos/${repo.owner.login}/${repo.name}/pulls?state=all&per_page=100`, {
+                    headers: {
+                        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+                    }
+                }).then(res => res.json())
+            );
+
+            const commitResults = await Promise.all(commitPromises);
+            const prResults = await Promise.all(prPromises);
+
+            let commitCounts = [];
+            let prCounts = [];
+
+            repos.forEach((repo, i) => {
+
+                const commits = commitResults[i];
+                const prs = prResults[i];
+
+                const prsThisYear = prs.filter(pr =>
+                    new Date(pr.created_at) >= new Date(yearStart)
+                );
+
+                commitCounts.push({
+                    repo: repo.name,
+                    count: commits.length
+                });
+
+                prCounts.push({
+                    repo: repo.name,
+                    count: prsThisYear.length
+                });
+            });
+
+            const mostCommits = commitCounts.reduce((max, repo) =>
+                repo.count > max.count ? repo : max
+            );
+
+            const mostPRs = prCounts.reduce((max, repo) =>
+                repo.count > max.count ? repo : max
+            );
+
+            setMostCommitsRepo(mostCommits);
+            setMostPRsRepo(mostPRs);
+        }
+
+        getRepoStats();
+
+    }, [repos]);
+
+    return { repos, commitsThisYear, commitsPerMonth, mostCommitsRepo, mostPRsRepo };
 }
 
 export default GetGitHubData;

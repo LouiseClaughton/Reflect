@@ -32,7 +32,7 @@ function DisplayCommits() {
                     );
                 })}
             </div>
-            <LiquidGlassBtn href='/commits'>
+            <LiquidGlassBtn href='/repositories'>
                 Next
             </LiquidGlassBtn>
         </div>
