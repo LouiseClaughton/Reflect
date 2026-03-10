@@ -5,23 +5,15 @@ import '../../style.css'
 export default function LiquidGlassContainer({ className, children, ...props }) {
     return (
         <div
-            className={`relative overflow-hidden shadow-lg w-full rounded-[60px] inline-block text-center h-full ${className}`}
+            className={`relative overflow-hidden shadow-lg h-full w-[80%] self-center m-12 rounded-[60px] inline-block text-center ${className}`}
         {...props}
         >
-        {/* Filter layer */}
-        <div
-            className="absolute inset-0"
-            style={{
-            backdropFilter: 'blur(4px) brightness(150%)',
-            WebkitBackdropFilter: 'blur(4px) brightness(150%)',
-            }}
-        />
         {/* Content layer */}
         <div
             className="absolute inset-0 flex flex-col items-center justify-center font-bold text-white"
             style={{ backgroundColor: 'hsla(0, 100%, 100%, 0.15)' }}
         >
-            {children} {/* now this will render correctly */}
+            {children}
         </div>
         </div>
     );

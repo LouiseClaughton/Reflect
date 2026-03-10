@@ -41,37 +41,37 @@ function Login() {
     const allConnected = providers.every((provider) => loggedIn[provider.id]);
 
     return (
-        <div className="w-full h-full flex justify-center items-center">
-            <div className="space-y-4">
-                <h1 className="text-xl font-bold">Connect your accounts</h1>
+        <div className="w-full h-full flex flex-col justify-center items-center">
+                <h1 className="text-xl font-bold">Welcome!</h1>
 
-                {providers.map((provider) => {
-                    const connected = loggedIn[provider.id];
+                <div className="w-full max-w-[50%] flex flex-col items-center mt-6">
+                    {providers.map((provider) => {
+                        const connected = loggedIn[provider.id];
 
-                    return (
-                        <div key={provider.id} className="flex items-center gap-3">
-                        {connected ? (
-                            <span className="text-green-500">
-                            ✓ {provider.name} Connected
-                            </span>
-                        ) : (
-                            <LiquidGlassBtn href={provider.authUrl}>
-                                Login with {provider.name}
+                        return (
+                            <div key={provider.id} className="flex items-center gap-3 w-full justify-center my-3">
+                                {connected ? (
+                                    <LiquidGlassBtn>
+                                        ✓ {provider.name} Connected
+                                    </LiquidGlassBtn>
+                                ) : (
+                                    <LiquidGlassBtn href={provider.authUrl}>
+                                        Login with {provider.name}
+                                    </LiquidGlassBtn>
+                                )}
+                            </div>
+                        );
+                    })}
+
+                    {/* {allConnected && ( */}
+                        <div className="pt-4 w-full flex items-center justify-center">
+                            <LiquidGlassBtn href="/dashboard" className="bg-linear-to-r from-cyan-500 to-blue-500">
+                                <span className="relative z-10">Continue</span>
                             </LiquidGlassBtn>
-                        )}
                         </div>
-                    );
-                })}
-
-                {allConnected && (
-                    <div className="pt-4">
-                        <LiquidGlassBtn href="/dashboard">
-                        Continue
-                        </LiquidGlassBtn>
-                    </div>
-                )}
+                    {/* )} */}
+                </div>
             </div>
-        </div>
     );
 }
 

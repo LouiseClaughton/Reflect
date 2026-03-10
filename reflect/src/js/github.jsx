@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 
 export function GetGitHubData() {
     const [repos, setRepos] = useState([]);
-    const [mostCommitsRepo, setMostCommitsRepo] = useState(null);
-    const [mostPRsRepo, setMostPRsRepo] = useState(null);
+    const [mostActiveRepo, setMostActiveRepo] = useState(null);
     const [commitsPerMonth, setCommitsPerMonth] = useState([]);
     const [commitsThisYear, setCommitsThisYear] = useState([]);
 
@@ -104,48 +103,33 @@ export function GetGitHubData() {
             );
 
             const commitResults = await Promise.all(commitPromises);
-            const prResults = await Promise.all(prPromises);
+            const prResults = await Promise.all(prPromises); // <-- missing
 
             let commitCounts = [];
-            let prCounts = [];
 
             repos.forEach((repo, i) => {
-
                 const commits = commitResults[i];
                 const prs = prResults[i];
 
-                const prsThisYear = prs.filter(pr =>
-                    new Date(pr.created_at) >= new Date(yearStart)
-                );
-
                 commitCounts.push({
                     repo: repo.name,
-                    count: commits.length
-                });
-
-                prCounts.push({
-                    repo: repo.name,
-                    count: prsThisYear.length
+                    commits: commits.length,
+                    prs: prs.length
                 });
             });
 
-            const mostCommits = commitCounts.reduce((max, repo) =>
-                repo.count > max.count ? repo : max
+            const mostActiveRepo = commitCounts.reduce((max, repo) =>
+                repo.commits > max.commits ? repo : max
             );
 
-            const mostPRs = prCounts.reduce((max, repo) =>
-                repo.count > max.count ? repo : max
-            );
-
-            setMostCommitsRepo(mostCommits);
-            setMostPRsRepo(mostPRs);
+            setMostActiveRepo(mostActiveRepo);
         }
 
         getRepoStats();
 
     }, [repos]);
 
-    return { repos, commitsThisYear, commitsPerMonth, mostCommitsRepo, mostPRsRepo };
+    return { repos, commitsThisYear, commitsPerMonth, mostActiveRepo };
 }
 
 export default GetGitHubData;

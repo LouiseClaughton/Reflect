@@ -7,13 +7,13 @@
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins';
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #ffffffde;
+  background-image: linear-gradient(to right, #7b48d3, #6e55d6, #6160d7, #5769d7, #4f71d5, #347cd6, #1686d4, #008ed0, #0099c5, #00a0ad, #00a38e, #4da46e);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

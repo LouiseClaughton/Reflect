@@ -11,8 +11,8 @@ function DisplayCommits() {
     const maxCount = commitsPerMonth?.maxCount || 0;
 
     return (
-        <div className="w-full h-full flex flex-col justify-center items-center">
-            <LiquidGlassContainer className="m-12">
+        <div className="w-[80%] h-[80%] flex flex-col justify-center items-center mx-auto my-8 gap-8">
+            <LiquidGlassContainer>
                 <span>You committed</span>
                 <h1>{commitsThisYear.length} times</h1>
                 <span>Your most active month was {maxMonth} with {maxCount} commits</span>
@@ -32,7 +32,7 @@ function DisplayCommits() {
                     );
                 })}
             </div>
-            <LiquidGlassBtn href='/repositories'>
+            <LiquidGlassBtn href='/repositories' className="bg-linear-to-r from-cyan-500 to-blue-500">
                 Next
             </LiquidGlassBtn>
         </div>

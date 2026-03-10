@@ -4,29 +4,22 @@ import LiquidGlassBtn from '../Components/liquid-glass-btn';
 import LiquidGlassContainer from '../Components/liquid-glass-container';
 
 function DisplayRepositories() {
-    let { mostCommitsRepo, mostPRsRepo } = getGitHubData();
-    let mostActiveRepo = '';
+    let { mostActiveRepo } = getGitHubData();
 
-    if (mostCommitsRepo != null && mostPRsRepo != null) {
-        mostActiveRepo = {
-            name: mostCommitsRepo.repo,
-            count: mostCommitsRepo.count,
-            pr_count: mostPRsRepo.count
-        }
+    if (mostActiveRepo != null) {
+        return (
+            <div className="w-[80%] h-[80%] flex flex-col justify-center items-center mx-auto my-8 gap-8">
+                <LiquidGlassContainer className="m-12">
+                    <span>Your most active repository was</span>
+                    <h1>{mostActiveRepo.repo}</h1>
+                    <span>with {mostActiveRepo.commits} commits and {mostActiveRepo.prs} pull requests</span>
+                </LiquidGlassContainer>
+                <LiquidGlassBtn href='/commits' className="bg-linear-to-r from-cyan-500 to-blue-500">
+                    Next
+                </LiquidGlassBtn>
+            </div>
+        );
     }
-
-    return (
-        <div className="w-full h-full flex flex-col justify-center items-center">
-            <LiquidGlassContainer className="m-12">
-                <span>Your most active repository was</span>
-                <h1>{mostActiveRepo.name}</h1>
-                <span>with {mostActiveRepo.count} commits and {mostActiveRepo.pr_count} pull requests</span>
-            </LiquidGlassContainer>
-            <LiquidGlassBtn href='/commits'>
-                Next
-            </LiquidGlassBtn>
-        </div>
-    );
 }
 
 export default DisplayRepositories;
