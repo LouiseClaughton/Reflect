@@ -6,29 +6,78 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors()); // allow requests from frontend
+app.use(cors());
 app.use(express.json());
 
 app.get("/oauth/callback", async (req, res) => {
-    const code = req.query.code;
-    if (!code) return res.status(400).json({ error: "Code not provided" });
+    const { code, provider } = req.query;
+
+    if (!code || !provider) {
+        return res.status(400).json({ error: "Code or provider missing" });
+    }
 
     try {
-        const response = await fetch("https://github.com/login/oauth/access_token", {
-            method: "POST",
-            headers: { Accept: "application/json" },
-            body: JSON.stringify({
+        let tokenUrl;
+        let body;
+        let headers = { Accept: "application/json" };
+
+        if (provider === "github") {
+            tokenUrl = "https://github.com/login/oauth/access_token";
+
+            body = JSON.stringify({
                 client_id: process.env.GITHUB_CLIENT_ID,
                 client_secret: process.env.GITHUB_CLIENT_SECRET,
                 code,
-            }),
+            });
+        }
+
+        if (provider === "bitbucket") {
+            tokenUrl = "https://bitbucket.org/site/oauth2/access_token";
+
+            const form = new URLSearchParams();
+            form.append("grant_type", "authorization_code");
+            form.append("code", code);
+
+            body = form;
+
+            headers = {
+                Authorization:
+                "Basic " +
+                Buffer.from(
+                    process.env.BITBUCKET_CLIENT_ID +
+                    ":" +
+                    process.env.BITBUCKET_CLIENT_SECRET
+                ).toString("base64"),
+                "Content-Type": "application/x-www-form-urlencoded",
+            };
+        }
+
+        if (provider === "activecollab") {
+            tokenUrl = "https://app.activecollab.com/oauth2/token";
+
+            body = JSON.stringify({
+                grant_type: "authorization_code",
+                client_id: process.env.ACTIVECOLLAB_CLIENT_ID,
+                client_secret: process.env.ACTIVECOLLAB_CLIENT_SECRET,
+                code,
+            });
+        }
+
+        const response = await fetch(tokenUrl, {
+            method: "POST",
+            headers,
+            body,
         });
 
         const data = await response.json();
-        res.json(data); // returns { access_token, token_type, scope }
+
+        res.json({
+            provider,
+            ...data,
+        });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Failed to get access token" });
+        res.status(500).json({ error: "Token exchange failed" });
     }
 });
 
