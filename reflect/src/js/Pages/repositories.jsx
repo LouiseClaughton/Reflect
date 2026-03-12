@@ -14,7 +14,7 @@ function DisplayRepositories() {
                     <h1>{mostActiveRepo.repo}</h1>
                     <span>with {mostActiveRepo.commits} commits and {mostActiveRepo.prs} pull requests</span>
                 </LiquidGlassContainer>
-                <LiquidGlassBtn href='/commits' className="bg-linear-to-r from-cyan-500 to-blue-500">
+                <LiquidGlassBtn href='/tasks' className="bg-linear-to-r from-cyan-500 to-blue-500">
                     Next
                 </LiquidGlassBtn>
             </div>
