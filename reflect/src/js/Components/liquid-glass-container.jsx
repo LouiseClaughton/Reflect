@@ -5,7 +5,7 @@ import '../../style.css'
 export default function LiquidGlassContainer({ className, children, ...props }) {
     return (
         <div
-            className={`relative overflow-hidden shadow-lg h-[50vh] w-[80%] self-center m-12 rounded-[60px] inline-block text-center ${className}`}
+            className={`relative overflow-hidden shadow-lg h-64 w-9/12 self-center mx-12 rounded-[60px] inline-block text-center ${className}`}
             {...props}
         >
             {/* Content layer */}

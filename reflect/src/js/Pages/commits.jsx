@@ -10,6 +10,7 @@ function DisplayCommits() {
     const counts = commitsPerMonth?.counts || {};
     const maxMonth = commitsPerMonth?.maxMonth || 'None';
     const maxCount = commitsPerMonth?.maxCount || 0;
+    const maxCommits = Math.max(...Object.values(counts));
 
     return (
         <Authenticated>
@@ -19,16 +20,19 @@ function DisplayCommits() {
                     <h1>{commitsThisYear.length} times</h1>
                     <span>Your most active month was {maxMonth} with {maxCount} commits</span>
                 </LiquidGlassContainer>
-                <div className="flex items-end gap-2 h-[15rem]">
+                <div className="flex items-end gap-2 h-[12rem]">
                     {Object.entries(counts).map(([key, value]) => {
-                        let height = (value / 10) * 100; // percentage
-                        if (height == 0) {
-                            height = 5;
+                        let height = (value / maxCommits) * 100;
+                        if (height === 0) {
+                            height = 5; // minimum visible bar
                         }
                         return (
-                            <div className="flex flex-col items-center justify-end h-full">
+                            <div key={key} className="flex flex-col items-center justify-end h-full">
                                 <span>{value}</span>
-                                <div key={key} className="bg-green-500 w-full flex justify-center rounded" style={{ height: `${height}%` }}></div>
+                                <div
+                                    className="bg-green-500 w-full rounded"
+                                    style={{ height: `${height}%` }}
+                                />
                                 {key.substring(0,3)}
                             </div>
                         );

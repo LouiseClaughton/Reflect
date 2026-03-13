@@ -4,6 +4,6 @@ import '../../style.css'
 // The liquid glass button component
 export default function Footer() {
     return (
-        <p>footer</p>
+        <div></div>
     )
 }
