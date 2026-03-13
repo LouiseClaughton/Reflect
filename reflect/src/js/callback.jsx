@@ -8,7 +8,7 @@ function Callback() {
         const code = new URLSearchParams(window.location.search).get('code');
         if (!code) return;
 
-        fetch(`http://localhost:3000/oauth/callback?code=${code}`)
+        fetch(`http://localhost:3001/oauth/callback?code=${code}`)
             .then(res => res.json())
             .then(data => {
                 localStorage.setItem('github_token', data.access_token);

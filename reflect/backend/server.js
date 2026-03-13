@@ -4,6 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import axios from "axios";
 
+import { createUser, authenticateUser } from "./user.js";
+
 dotenv.config();
 
 const app = express();
@@ -31,6 +33,38 @@ app.options("/login", (req, res) => {
 
 app.options("/projects", (req, res) => {
   res.sendStatus(200);
+});
+
+/* --------------------------
+    Get Users from SQL
+---------------------------*/
+
+// Test route: create user
+app.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const userId = await createUser(email, password);
+    res.json({ success: true, userId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+// Test route: login
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await authenticateUser(email, password);
+    if (user) {
+      res.json({ success: true, user });
+    } else {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
 });
 
 /* --------------------------
@@ -201,7 +235,7 @@ app.get("/projects", async (req, res) => {
    Server Start
 -------------------------- */
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
     console.log(`Backend running on port ${PORT}`);

@@ -18,11 +18,11 @@ export function useDashboardData() {
 
                 const [github, bitbucket, activecollab] = await Promise.all([
 
-                    fetch("http://localhost:3000/github/stats").then(r => r.json()),
+                    fetch("http://localhost:3001/github/stats").then(r => r.json()),
 
-                    fetch("http://localhost:3000/bitbucket/stats").then(r => r.json()),
+                    fetch("http://localhost:3001/bitbucket/stats").then(r => r.json()),
 
-                    fetch("http://localhost:3000/activecollab/projects").then(r => r.json())
+                    fetch("http://localhost:3001/activecollab/projects").then(r => r.json())
 
                 ]);
 

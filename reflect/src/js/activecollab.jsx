@@ -5,13 +5,13 @@ export function GetActiveCollabData() {
   const [totalTime, setTotalTime] = useState(0);
 
   const fetchProjects = async () => {
-    const projectsRes = await fetch("http://localhost:3000/projects");
+    const projectsRes = await fetch("http://localhost:3001/projects");
     const projects = await projectsRes.json();
     return projects;
   };
 
   const fetchUsers = async () => {
-    const usersRes = await fetch("http://localhost:3000/users");
+    const usersRes = await fetch("http://localhost:3001/users");
     const users = await usersRes.json();
     return users;
   }
