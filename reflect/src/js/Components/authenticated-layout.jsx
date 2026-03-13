@@ -1,28 +1,31 @@
-import React, { useRef, useState, useEffect } from 'react'
-import '../../style.css'
+import { useEffect, useMemo, useState } from "react";
+import Footer from "./Footer";
+import ProfileUserIcon from "../../assets/ProfileUserIcon";
+import SettingsIcon from "../../assets/SettingsIcon";
 
-// The liquid glass button component
-export default function LiquidGlassBtn({ children, href, className, gradient_from, gradient_to, ...props }) {
+export default function Authenticated ({ children }) {
+
     return (
-        <a
-            href={href}
-            className={`relative overflow-hidden shadow-lg w-full rounded-[60px] text-center group flex justify-center items-center ${className}`}
-            style={{
-                maxWidth: '300px',
-                minHeight: '56px',
-                backgroundColor: "hsla(0, 100%, 100%, 0.15)"
-            }}
-            {...props}
-        >
-            {/* Gradient layer */}
-            <div className={`absolute inset-0 bg-gradient-to-r opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${gradient_from} ${gradient_to}`}></div>
+        <>
+            <div className="min-h-screen">
+                <nav className="">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 border-b-1 border-white">
+                        <div className="flex h-16 items-center justify-between">
+                            <div className="flex w-40 items-center justify-start">
+                                <a href="/" className="font-bold !text-white text-xl">Reflect</a>
+                            </div>
 
-            {/* Content */}
-            <div
-                className="relative flex items-center justify-center font-bold text-white h-full px-6"
-            >
-                {children}
+                            <div>
+                                <SettingsIcon />
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <main className="m-12">{children}</main>
             </div>
-        </a>
-    )
+
+            <Footer />
+        </>
+    );
 }

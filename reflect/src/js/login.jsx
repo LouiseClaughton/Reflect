@@ -94,6 +94,7 @@
 
 // LoginForm.jsx
 import { useState } from "react";
+import Authenticated from "./Components/authenticated-layout";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -124,24 +125,26 @@ function Login({ onLogin }) {
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col gap-2">
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-      {message && <p>{message}</p>}
-    </form>
+    <Authenticated>
+        <form onSubmit={handleLogin} className="flex flex-col gap-2">
+            <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+            />
+            <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+            />
+            <button type="submit">Login</button>
+            {message && <p>{message}</p>}
+        </form>
+    </Authenticated>
   );
 }
 
